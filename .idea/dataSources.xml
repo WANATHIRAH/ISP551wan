@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="PostgreSQL - daa3ibe4h0t73n@ec2-3-227-15-75.compute-1.amazonaws.com" uuid="42c8168e-062f-493b-b367-aca24d3fe7ae">
+    <data-source source="LOCAL" name="d2us57cbf117bh@ec2-44-194-101-60.compute-1.amazonaws.com" uuid="620eb347-edc4-4ce2-acc4-ec6a9af0c883">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://ec2-3-227-15-75.compute-1.amazonaws.com:5432/daa3ibe4h0t73n</jdbc-url>
+      <jdbc-url>jdbc:postgresql://ec2-44-194-101-60.compute-1.amazonaws.com:5432/d2us57cbf117bh</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="NRS" uuid="a37b5854-305e-4380-9d86-a9631708131c">
+      <driver-ref>oracle.19</driver-ref>
+      <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.driver.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@localhost:1521:XE</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
