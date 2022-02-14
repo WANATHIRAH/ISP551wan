@@ -23,10 +23,10 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-//        Part f=request.getPart("hPic");
-//        String imageFileName=f.getSubmittedFileName();
-//        File file = new File("C:/Users/Public/LAB EXERCISE/nonresident/src/main/webapp/images/" + imageFileName);
-//        System.out.println("my file need upload" + file);
+        Part f=request.getPart("hPic");
+        String imageFileName=f.getSubmittedFileName();
+        File file = new File("C:/Users/Public/LAB EXERCISE/nonresident/src/main/webapp/images/" + imageFileName);
+        System.out.println("my file need upload" + file);
 
 
        try{
@@ -47,14 +47,14 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
            String desc = request.getParameter("Desc");
 
 
-//
-//               FileOutputStream fos = new FileOutputStream(file);
-//               InputStream is = f.getInputStream();
-//
-//               byte[] data=new byte[is.available()];
-//               is.read(data);
-//               fos.write(data);
-//               fos.close();
+
+               FileOutputStream fos = new FileOutputStream(file);
+               InputStream is = f.getInputStream();
+
+               byte[] data=new byte[is.available()];
+               is.read(data);
+               fos.write(data);
+               fos.close();
 
 
            try {
@@ -64,7 +64,7 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
                String pass = "system";
                Connection conn = DriverManager.getConnection(dbURL, user, pass);
 
-               PreparedStatement st = conn.prepareStatement("insert into HOUSEDETAILSS(HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID) values(localtimestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,'wan',HOUSE_SEQ.NEXTVAL,1)");
+               PreparedStatement st = conn.prepareStatement("insert into HOUSEDETAILSS(HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID) values(localtimestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?,HOUSE_SEQ.NEXTVAL,1)");
                st.setString(1,hName);
                st.setDouble(2,hMP);
                st.setString(3,hAddress);
@@ -78,7 +78,7 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
                st.setInt(11,hFurniture);
                st.setInt(12,hWM);
                st.setString(13,desc);
-
+               st.setString(14,imageFileName);
 
                int row= st.executeUpdate();
 
