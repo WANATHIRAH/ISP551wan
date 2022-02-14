@@ -86,7 +86,7 @@ public class LAcreateRoomDetailsServlet extends HttpServlet {
                 st.setString(11,desc);
                 st.setString(12,imageFileName);
 
-
+//               wan
                 PreparedStatement sr=conn.prepareStatement("select max(houseid) from housedetails");
                 ResultSet rs = sr.executeQuery();
                 while(rs.next()){
