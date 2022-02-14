@@ -24,10 +24,11 @@
 </div>
 <br>
 
+
 <sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
 
 <sql:query dataSource="${ic}" var="oc">
-    SELECT HOUSEID,HOUSEPICNAME,HOUSENAME
+    SELECT HOUSEID,HOUSEPICNAME,HOUSENAME,RENTYPE
     FROM HOUSEDETAILSS
     WHERE LANDLORDID=1
 </sql:query>
@@ -35,22 +36,30 @@
 <div class="overflow-auto">
     <c:forEach var="result" items="${oc.rows}">
         <c:set var="houseid" scope="application" value="${result.houseid}"/>
-    <div class="Hcont">
-        <form action="landlord-displayMoreInfo.jsp" method="post">
-            <input type="number" id="hid" name="hid" value="${result.houseid}" hidden/>
-        <div class="housepic">
-            <img src="images/${result.housepicname}"/>
-        </div>  <%--Nnti letak data sql using scrplet --%>
-        <div class="houseName">
-            <p><c:out value="${result.housename}"/></p>  <%--Nnti letak data sql using scrplet --%>
+        <div class="Hcont">
+            <form method="post">
+                <input type="number" id="hid" name="hid" value="${result.houseid}" hidden/>
+                <div class="housepic">
+                    <img src="images/${result.housepicname}"/>
+                </div>  <%--Nnti letak data sql using scrplet --%>
+                <div class="houseName">
+                    <p><c:out value="${result.housename}"/></p>  <%--Nnti letak data sql using scrplet --%>
+                </div>
+                <c:set var="hr" scope="application" value="${result.RENTYPE}"/>
+                <c:if test="${hr=='House'}">
+                    <div class="myLink">
+                        <button type="submit" formaction="landlord-displayMoreInfoHouse.jsp">View More</button>
+                    </div>
+                </c:if>
+                <c:if test="${hr=='Room'}">
+                    <div class="myLink">
+                        <button type="submit" formaction="landlord-displayMoreInfoRoom.jsp">View More</button>
+                    </div>
+                </c:if>
+            </form>
         </div>
-        <div class="myLink">
-            <button type="submit">View More</button>
-        </div>
-        </form>
-    </div>
     </c:forEach>
-    </div>
+</div>
 
 
     <div class="C" id="Chouse">
@@ -66,10 +75,6 @@
 </div>
 <br>
 <br>
-
-
-
-
 <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
 
 
@@ -79,11 +84,11 @@
 <script type="text/javascript">
     <%--kene ada sql untuk specifickan id rumah mana nak display dalam page ni--%>
     function x() {
-        location.href = "landlord-displayMoreInfo.jsp";
+        location.href = "landlord-displayMoreInfoHouse.jsp";
     }
 
     function z() {
-        location.href = "landlord-createHouseDetails.jsp";
+        location.href = "landlord-RoomHouse.jsp";
     }
 </script>
 

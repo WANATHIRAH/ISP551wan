@@ -66,28 +66,38 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
 
                PreparedStatement st = conn.prepareStatement("insert into HOUSEDETAILSS(HOUSEPUBLISHDATE,HOUSENAME," +
                        "HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY," +
-                       "HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC," +
+                       "HOUSENOTOILET,HOUSENOAC," +
                        "HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION" +
-                       ",HOUSEPICNAME,HOUSEID,LANDLORDID) " +
-                       "values(localtimestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?,HOUSE_SEQ.NEXTVAL,1)");
+                       ",HOUSEPICNAME,HOUSEID,LANDLORDID,RENTYPE) " +
+                       "values(localtimestamp,?,?,?,?,?,?,?,?,?,?,?,?,HOUSE_SEQ.NEXTVAL,1,'House')");
                st.setString(1,hName);
                st.setDouble(2,hMP);
                st.setString(3,hAddress);
                st.setString(4,hloc);
                st.setString(5,hAvailability);
-               st.setInt(6,hNoTenants);
-               st.setInt(7,hNoRoom);
-               st.setInt(8,hNoToilet);
-               st.setInt(9,hNoAC);
-               st.setString(10,hWifi);
-               st.setInt(11,hFurniture);
-               st.setInt(12,hWM);
-               st.setString(13,desc);
-               st.setString(14,imageFileName);
+               st.setInt(6,hNoToilet);
+               st.setInt(7,hNoAC);
+               st.setString(8,hWifi);
+               st.setInt(9,hFurniture);
+               st.setInt(10,hWM);
+               st.setString(11,desc);
+               st.setString(12,imageFileName);
+
+               PreparedStatement sp=conn.prepareStatement("insert into house(HOUSEID,HOUSENOTENANTS,HOUSENOROOM) values(HOUSE_SEQ.NEXTVAL,?,?)");
+               sp.setInt(1,hNoTenants);
+               sp.setInt(2,hNoRoom);
 
                int row= st.executeUpdate();
 
                if(row>0){
+                   response.sendRedirect("landlord-displayHouseList.jsp");
+               }else{
+                   out.println("Record failed");
+               }
+
+               int row2= sp.executeUpdate();
+
+               if(row2>0){
                    response.sendRedirect("landlord-displayHouseList.jsp");
                }else{
                    out.println("Record failed");

@@ -115,7 +115,7 @@ public class LAdisplayMoreDetailsServlet extends HttpServlet {
 
 
 
-        rd= request.getRequestDispatcher("landlord-displayMoreInfo.jsp"); // redirect ke page jsp ni
+        rd= request.getRequestDispatcher("landlord-displayMoreInfoHouse.jsp"); // redirect ke page jsp ni
         rd.forward(request,response); // past control ke file jsp
 
     }

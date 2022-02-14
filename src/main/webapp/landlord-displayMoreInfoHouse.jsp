@@ -35,8 +35,10 @@
         int jhouseid = Integer.parseInt(request.getParameter("hid"));
     %>
     <c:set var="jhouseid" value="<%=jhouseid%>"/>
-    SELECT HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID
-    FROM HOUSEDETAILSS
+    SELECT H.HOUSEPUBLISHDATE,H.HOUSENAME,H.HOUSEMONTHLYPRICE,H.HOUSEADDRESS,H.HOUSELOCATION,H.HOUSEAVAILIBILITY,H.HOUSENOTOILET,H.HOUSENOAC,H.HOUSEWIFI,H.HOUSEFURNITURE,H.HOUSEWM,H.HOUSEDESCRIPTION,H.HOUSEPICNAME,H.HOUSEID,H.LANDLORDID,HH.HOUSENOTENANTS,HH.HOUSENOROOM
+    FROM HOUSEDETAILSS H
+    JOIN HOUSE HH
+    ON H.HOUSEID = HH.HOUSEID
     WHERE HOUSEID=?
     <sql:param value="${jhouseid}" />
 </sql:query>
@@ -53,7 +55,7 @@
         </div>
      <div class="mybtn">
         <button formaction="#" type="submit">Booking</button>
-        <button formaction="LAdisplayInUpdateServlet" type="submit">Edit</button>
+        <button formaction="landlord-updateHouseDetails.jsp" type="submit">Edit</button>
         <button type="submit" formaction="LAdeleteHouseDetails" onclick="return confirm('Are you sure you wish to delete? Your action cannot be undone!');">Delete</button>
      </div>
     </form>
@@ -109,7 +111,6 @@
                         <td colspan="3">Available</td>
                         </c:if>
                         <c:if test = "${wifiAv == 'Not Available'}">
-                        else if (wifi.equals("false")){%>
                         <td colspan="3">Not Available</td>
                         </c:if>
                     </tr>

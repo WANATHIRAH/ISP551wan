@@ -8,46 +8,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-<style><%@include file="landlord-updateHouseDetails.css"%></style>
+<style><%@include file="landlord-createHouseDetails.css"%></style>
 <head>
     <%@include file="landlord-navbar.html"%>
 </head>
 <body>
-<sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
+<%
+    Date today = new Date();
 
-<sql:query dataSource="${ic}" var="oc">
-    <%
-        int jhouseid = Integer.parseInt(request.getParameter("hid"));
-    %>
-    <c:set var="jhouseid" value="<%=jhouseid%>"/>
-    SELECT HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID
-    FROM HOUSEDETAILSS
-    WHERE HOUSEID=?
-    <sql:param value="${jhouseid}" />
-</sql:query>
+    SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    String ddMMyyyyToday = DATE_FORMAT.format(today);
 
-<c:forEach var="result" items="${oc.rows}">
+
+%>
 <div class="topic">
     <p>HOUSE INFORMATION APPLICATION</p>
 </div>
 
 <div class="tintedbg">
-    <form name="HouseInfoForm" method="post" action="LAupdateHouseDetailsServlet" onsubmit="return confirm('Are you really wish to update?');"  enctype = "multipart/form-data">
+    <form name="HouseInfoForm" method="post" action="LAcreateRoomDetailsServlet" action="AddImagesServlet"  enctype = "multipart/form-data">
         <br/>
-        <input type="number" name="hid" value="${jhouseid}" hidden>
-        <%--        <input type="text" name="houseid" value="<%=resultSet.getString("id") %>">--%>
         <br/>
         <div class="input-box">
             <div class="col">
                 <label class="datepub" for="hName">Date Publish</label>
-                <input type="text" id="PubDate" class="form-control" name="PubDate" value="${result.HOUSEPUBLISHDATE}" readonly="readonly">
+                <input type="text" id="PubDate" class="form-control" name="PubDate" value="<%= ddMMyyyyToday %>" readonly="readonly">
             </div>
         </div>
 
@@ -56,58 +42,30 @@
         <div class="toinline">
             <div class="input-box">
                 <label for="hName">House Name</label>
-                <input type="text" id="hName" class="form-control" maxlength="25" name="hName" value="${result.HOUSENAME}" required>
+                <input type="text" id="hName" class="form-control" maxlength="25" name="hName" placeholder="eg: Bunglow 2 Tingkat" required>
             </div>
 
             <div class="input-box">
                 <label for="hAddress">Address</label>
-                <input type="text" id="hAddress" class="form-control" name="hAddress" value="${result.HOUSEADDRESS}" required>
+                <input type="text" id="hAddress" class="form-control" name="hAddress" placeholder="House Address" required>
             </div>
         </div>
-
 
 
         <div class="toinline">
             <div class="input-box">
                 <label for="hloc">Location:</label>
-                <c:set var = "houseloc" scope = "session" value = "${result.HOUSELOCATION}"/>
-                <c:if test = "${houseloc == 'Taman Lipat Kajang'}">
                 <select name="hloc" id="hloc">
-                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
+                    <option value="Taman Lipat Kajang">Taman Lipat Kajang</option>
                     <option value="Taman Merlimau">Taman Merlimau</option>
                     <option value="Taman Lipat Perdana">Taman Lipat Perdana</option>
                     <option value="Seri Mendapat">Seri Mendapat</option>
                 </select>
-                </c:if>
-                <c:if test = "${houseloc == 'Taman Merlimau'}">
-                <select name="hloc" id="hloc">
-                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
-                    <option value="Taman Lipat Kajang">Taman Lipat Kajang</option>
-                    <option value="Taman Lipat Perdana">Taman Lipat Perdana</option>
-                    <option value="Seri Mendapat">Seri Mendapat</option>
-                </select>
-                </c:if>
-                <c:if test = "${houseloc == 'Taman Lipat Perdana'}">
-                <select name="hloc" id="hloc">
-                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
-                    <option value="Taman Merlimau">Taman Merlimau</option>
-                    <option value="Taman Lipat Kajang">Taman Lipat Kajang</option>
-                    <option value="Seri Mendapat">Seri Mendapat</option>
-                </select>
-                </c:if>
-                <c:if test = "${houseloc == 'Seri Mendapat'}">
-                <select name="hloc" id="hloc">
-                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
-                    <option value="Taman Merlimau">Taman Merlimau</option>
-                    <option value="Taman Lipat Kajang">Taman Lipat Kajang</option>
-                    <option value="Taman Lipat Perdana">Taman Lipat Perdana</option>
-                </select>
-                </c:if>
             </div>
 
             <div class="input-box">
                 <label for="Pricepm">Price per month (RM)</label>
-                <input type="number" id="Pricepm" class="form-control"  name="Pricepm" placeholder="eg: 300" value="${result.HOUSEMONTHLYPRICE}" required>
+                <input type="number" id="Pricepm" class="form-control"  name="Pricepm" placeholder="eg: 300" required>
             </div>
         </div>
 
@@ -115,54 +73,28 @@
             <div class="thedetails">
                 <div class="available-detail">
                     <span class="thetopic">Available?</span>
-                    <c:set var = "houseAv" scope = "session" value = "${result.HOUSEAVAILIBILITY}"/>
-                    <c:if test = "${houseAv == 'Available'}">
                     <div class="category">
                         <span class="c2">
-                            <input class="c1" type="radio" name="hAvailability"  value="Available" checked>Available
+                            <input class="c1" type="radio" name="hAvailability" id="OYes" value="Available" checked>Available
                         </span>
                         <span class="c2">
-                            <input class="c1" type="radio" name="hAvailability"  value="Not Available">Not Available
+                            <input class="c1" type="radio" name="hAvailability" id="ONo" value="Not Available" disabled>Not Available
                         </span>
                     </div>
-                    </c:if>
-                    <c:if test = "${houseAv == 'Not Available'}">
-                    <div class="category">
-                        <span class="c2">
-                            <input class="c1" type="radio" name="hAvailability"  value="Available" checked>Available
-                        </span>
-                        <span class="c2">
-                            <input class="c1" type="radio" name="hAvailability"  value="Not Available">Not Available
-                        </span>
-                    </div>
-                    </c:if>
                 </div>
             </div>
 
             <div class="thedetails">
                 <div class="wifi-detail">
                     <span class="thetopic">Wifi?</span>
-                    <c:set var = "houseWifi" scope = "session" value = "${result.HOUSEWIFI}"/>
-                    <c:if test = "${houseWifi == 'Available'}">
                     <div class="category">
                          <span class="c2">
-                            <input class="c1" type="radio" name="hWifi" value="Available" checked>Available
+                            <input class="c1" type="radio" name="hWifi" id="WYes" value="Available">Available
                          </span>
                         <span class="c2">
-                            <input class="c1" type="radio" name="hWifi" value="Not Available">Not Available
+                            <input class="c1" type="radio" name="hWifi" id="WNo" value="Available">Not Available
                         </span>
                     </div>
-                    </c:if>
-                    <c:if test = "${houseWifi == 'Not Available'}">
-                    <div class="category">
-                         <span class="c2">
-                            <input class="c1" type="radio" name="hWifi"  value="Available">Available
-                         </span>
-                        <span class="c2">
-                            <input class="c1" type="radio" name="hWifi" value="Not Available" checked>Not Available
-                        </span>
-                    </div>
-                    </c:if>
                 </div>
             </div>
         </div>
@@ -171,31 +103,10 @@
         <br>
         <div class="toinline">
             <div class="thedetails">
-                <label class="tenantnum" for="NumOfTenant">Total of Tenant</label>
-                <div class="quantity">
-                    <button class="btn minus-btnNOT disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfTenant" id="NumOfTenant" value="${result.HOUSENOTENANTS}">
-                    <button class="btn plus-btnNOT" type="button">+</button>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="toinline">
-            <div class="thedetails">
-                <div class="quantity">
-                    <img src="https://img.icons8.com/ios-glyphs/40/000000/sleeping-in-bed.png"/>
-                    <button class="btn minus-btnhotel disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfRooms" id="NumOfRooms"  value="${result.HOUSENOROOM}">
-                    <button class="btn plus-btnhotel" type="button">+</button>
-                </div>
-            </div>
-
-            <div class="thedetails">
                 <div class="quantity">
                     <img src="https://img.icons8.com/ios-glyphs/40/000000/shower-and-tub.png"/>
                     <button class="btn minus-btnbath disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfToilet" id="NumOfToilet" value="${result.HOUSENOTOILET}">
+                    <input style="text-align: center" type="text" name="NumOfToilet" id="NumOfToilet" value="1">
                     <button class="btn plus-btnbath" type="button">+</button>
                 </div>
             </div>
@@ -206,7 +117,7 @@
                 <div class="quantity">
                     <img src="https://img.icons8.com/ios-filled/40/000000/furniture.png"/>
                     <button class="btn minus-btnsfa disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfSofa" id="NumOfSofa" value="${result.HOUSEFURNITURE}"/>
+                    <input style="text-align: center" type="text" name="NumOfSofa" id="NumOfSofa" value="1">
                     <button class="btn plus-btnsfa" type="button">+</button>
                 </div>
             </div>
@@ -215,7 +126,7 @@
                 <div class="quantity">
                     <td style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/40/000000/washing-machine.png"/>
                         <button class="btn minus-btnwm disabled" type="button">-</button>
-                        <input style="text-align: center" type="text" name="NumOfWM" id="NumOfWM"  value="${result.HOUSEWM}"/>
+                        <input style="text-align: center" type="text" name="NumOfWM" id="NumOfWM" value="1">
                         <button class="btn plus-btnwm" type="button">+</button>
                 </div>
             </div>
@@ -226,7 +137,7 @@
                 <div class="quantity">
                     <img src="https://img.icons8.com/fluency-systems-filled/40/000000/air-conditioner.png"/>
                     <button class="btn minus-btnac disabled" type="button">-</button>
-                    <input  style="text-align: center" type="text" name="NumOfAC" id="NumOfAC" value="${result.HOUSENOAC}"/>
+                    <input  style="text-align: center" type="text" name="NumOfAC" id="NumOfAC" value="1">
                     <button class="btn plus-btnac" type="button">+</button>
                 </div>
             </div>
@@ -234,35 +145,37 @@
 
         <br>
         <div class="form-group col-md">
-            <label for="Desc">House description:</label>
+            <label for="Desc">Room description:</label>
             <br>
-            <textarea id="Desc" maxlength="255" name="Desc" rows="4" cols="50">${result.HOUSEDESCRIPTION}</textarea>
+            <textarea id="Desc" maxlength="255" name="Desc" rows="4" cols="50"></textarea>
         </div>
 
 
         <br>
 
         <div class="file-upload-wrapper col-md">
-            <label for="hPic">House Image :</label>
+            <label for="hPic">Room Image :</label>
             <input type="file" accept="image/*" id="hPic" name="hPic" class="file-upload"
                    data-height="300"/>
         </div>
-        <button>${result.HOUSEPICNAME}</button><button><i class="material-icons w3-xlarge">close</i></button>
-
 
 
         <br>
 
         <br/>
         <div class="sbt">
-            <button type="submit" class="block">Update</button>
+            <button type="submit" class="block">Submit</button>
         </div>
         <br/>
     </form>
 </div>
-</c:forEach>
+
 
 <script>
+
+    //upload file
+
+    //$('.file-upload').file_upload();
 
     //price under 1 button disabled
 
