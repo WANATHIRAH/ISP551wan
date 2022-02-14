@@ -8,33 +8,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@page import="java.util.Date"%>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <style><%@include file="landlord-updateHouseDetails.css"%></style>
 <head>
     <%@include file="landlord-navbar.html"%>
 </head>
 <body>
-<%
+<sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
 
-    String houseidJ= (String)request.getAttribute("hids");
-    String housenameJ= (String)request.getAttribute("hnames");
-    String housemonth= (String)request.getAttribute("hpaymonth");
-    String houseadd= (String)request.getAttribute("haddress");
-    String houseloc= (String)request.getAttribute("houseloc");
-    Date d= (Date) request.getAttribute("hpdate");
-    String available= (String)request.getAttribute("hava");
-    String hnotenant= (String)request.getAttribute("hnoT");
-    String hnoroom= (String)request.getAttribute("hnoR");
-    String hnotoilet= (String)request.getAttribute("hnoToil");
-    String hnoac= (String)request.getAttribute("hnoAC");
-    String wifi= (String)request.getAttribute("hnoWifi");
-    String furnish= (String)request.getAttribute("hnoFur");
-    String washing= (String)request.getAttribute("hnoWM");
-    String housedesc= (String)request.getAttribute("hdec");
-    String housepic= (String)request.getAttribute("hpic");
+<sql:query dataSource="${ic}" var="oc">
+    <%
+        int jhouseid = Integer.parseInt(request.getParameter("hid"));
+    %>
+    <c:set var="jhouseid" value="<%=jhouseid%>"/>
+    SELECT HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID
+    FROM HOUSEDETAILSS
+    WHERE HOUSEID=?
+    <sql:param value="${jhouseid}" />
+</sql:query>
 
-
-%>
+<c:forEach var="result" items="${oc.rows}">
 <div class="topic">
     <p>HOUSE INFORMATION APPLICATION</p>
 </div>
@@ -42,13 +41,13 @@
 <div class="tintedbg">
     <form name="HouseInfoForm" method="post" action="LAupdateHouseDetailsServlet" onsubmit="return confirm('Are you really wish to update?');"  enctype = "multipart/form-data">
         <br/>
-        <input type="number" name="hid" value="<%=houseidJ%>" hidden>
+        <input type="number" name="hid" value="${jhouseid}" hidden>
         <%--        <input type="text" name="houseid" value="<%=resultSet.getString("id") %>">--%>
         <br/>
         <div class="input-box">
             <div class="col">
                 <label class="datepub" for="hName">Date Publish</label>
-                <input type="text" id="PubDate" class="form-control" name="PubDate" value="<%=d%>" readonly="readonly">
+                <input type="text" id="PubDate" class="form-control" name="PubDate" value="${result.HOUSEPUBLISHDATE}" readonly="readonly">
             </div>
         </div>
 
@@ -57,12 +56,12 @@
         <div class="toinline">
             <div class="input-box">
                 <label for="hName">House Name</label>
-                <input type="text" id="hName" class="form-control" maxlength="25" name="hName" value="<%=housenameJ%>" required>
+                <input type="text" id="hName" class="form-control" maxlength="25" name="hName" value="${result.HOUSENAME}" required>
             </div>
 
             <div class="input-box">
                 <label for="hAddress">Address</label>
-                <input type="text" id="hAddress" class="form-control" name="hAddress" value="<%=houseadd%>" required>
+                <input type="text" id="hAddress" class="form-control" name="hAddress" value="${result.HOUSEADDRESS}" required>
             </div>
         </div>
 
@@ -71,53 +70,44 @@
         <div class="toinline">
             <div class="input-box">
                 <label for="hloc">Location:</label>
-                <%
-                    if (houseloc.equals("Taman Lipat Kajang")){
-                %>
+                <c:set var = "houseloc" scope = "session" value = "${result.HOUSELOCATION}"/>
+                <c:if test = "${houseloc == 'Taman Lipat Kajang'}">
                 <select name="hloc" id="hloc">
-                    <option value="<%=houseloc%>"><%=houseloc%></option>
+                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
                     <option value="Taman Merlimau">Taman Merlimau</option>
                     <option value="Taman Lipat Perdana">Taman Lipat Perdana</option>
                     <option value="Seri Mendapat">Seri Mendapat</option>
                 </select>
-                <%
-                    }
-                    else if (houseloc.equals("Taman Merlimau")){
-                %>
+                </c:if>
+                <c:if test = "${houseloc == 'Taman Merlimau'}">
                 <select name="hloc" id="hloc">
-                    <option value="<%=houseloc%>"><%=houseloc%></option>
+                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
                     <option value="Taman Lipat Kajang">Taman Lipat Kajang</option>
                     <option value="Taman Lipat Perdana">Taman Lipat Perdana</option>
                     <option value="Seri Mendapat">Seri Mendapat</option>
                 </select>
-                <%
-                    }
-                    else if (houseloc.equals("Taman Lipat Perdana")){
-                %>
+                </c:if>
+                <c:if test = "${houseloc == 'Taman Lipat Perdana'}">
                 <select name="hloc" id="hloc">
-                    <option value="<%=houseloc%>"><%=houseloc%></option>
+                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
                     <option value="Taman Merlimau">Taman Merlimau</option>
                     <option value="Taman Lipat Kajang">Taman Lipat Kajang</option>
                     <option value="Seri Mendapat">Seri Mendapat</option>
                 </select>
-                <%
-                }
-                else if (houseloc.equals("Seri Mendapat")){
-                %>
+                </c:if>
+                <c:if test = "${houseloc == 'Seri Mendapat'}">
                 <select name="hloc" id="hloc">
-                    <option value="<%=houseloc%>"><%=houseloc%></option>
+                    <option value="${result.HOUSELOCATION}">${result.HOUSELOCATION}</option>
                     <option value="Taman Merlimau">Taman Merlimau</option>
                     <option value="Taman Lipat Kajang">Taman Lipat Kajang</option>
                     <option value="Taman Lipat Perdana">Taman Lipat Perdana</option>
                 </select>
-                <%
-                    }
-                %>
+                </c:if>
             </div>
 
             <div class="input-box">
                 <label for="Pricepm">Price per month (RM)</label>
-                <input type="number" id="Pricepm" class="form-control"  name="Pricepm" placeholder="eg: 300" value="<%=housemonth%>" required>
+                <input type="number" id="Pricepm" class="form-control"  name="Pricepm" placeholder="eg: 300" value="${result.HOUSEMONTHLYPRICE}" required>
             </div>
         </div>
 
@@ -125,9 +115,8 @@
             <div class="thedetails">
                 <div class="available-detail">
                     <span class="thetopic">Available?</span>
-                    <%
-                        if (available.equals("Available")){
-                    %>
+                    <c:set var = "houseAv" scope = "session" value = "${result.HOUSEAVAILIBILITY}"/>
+                    <c:if test = "${houseAv == 'Available'}">
                     <div class="category">
                         <span class="c2">
                             <input class="c1" type="radio" name="hAvailability"  value="Available" checked>Available
@@ -136,11 +125,8 @@
                             <input class="c1" type="radio" name="hAvailability"  value="Not Available">Not Available
                         </span>
                     </div>
-                    <%
-                        }
-
-                        else if((available.equals("Not Available"))){
-                    %>
+                    </c:if>
+                    <c:if test = "${houseAv == 'Not Available'}">
                     <div class="category">
                         <span class="c2">
                             <input class="c1" type="radio" name="hAvailability"  value="Available" checked>Available
@@ -149,18 +135,15 @@
                             <input class="c1" type="radio" name="hAvailability"  value="Not Available">Not Available
                         </span>
                     </div>
-                    <%
-                        }
-                    %>
+                    </c:if>
                 </div>
             </div>
 
             <div class="thedetails">
                 <div class="wifi-detail">
                     <span class="thetopic">Wifi?</span>
-                    <%
-                        if (wifi.equals("true")){
-                    %>
+                    <c:set var = "houseWifi" scope = "session" value = "${result.HOUSEWIFI}"/>
+                    <c:if test = "${houseWifi == 'Available'}">
                     <div class="category">
                          <span class="c2">
                             <input class="c1" type="radio" name="hWifi" value=true checked>Available
@@ -169,11 +152,8 @@
                             <input class="c1" type="radio" name="hWifi">Not Available
                         </span>
                     </div>
-                    <%
-                    }
-
-                    else if((wifi.equals("false"))){
-                    %>
+                    </c:if>
+                    <c:if test = "${houseWifi == 'Not Available'}">
                     <div class="category">
                          <span class="c2">
                             <input class="c1" type="radio" name="hWifi"  value="Available">Available
@@ -182,9 +162,7 @@
                             <input class="c1" type="radio" name="hWifi" value="Not Available" checked>Not Available
                         </span>
                     </div>
-                    <%
-                        }
-                    %>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -196,7 +174,7 @@
                 <label class="tenantnum" for="NumOfTenant">Total of Tenant</label>
                 <div class="quantity">
                     <button class="btn minus-btnNOT disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfTenant" id="NumOfTenant" value="<%=hnotenant%>">
+                    <input style="text-align: center" type="text" name="NumOfTenant" id="NumOfTenant" value="${result.HOUSENOTENANTS}">
                     <button class="btn plus-btnNOT" type="button">+</button>
                 </div>
             </div>
@@ -208,7 +186,7 @@
                 <div class="quantity">
                     <img src="https://img.icons8.com/ios-glyphs/40/000000/sleeping-in-bed.png"/>
                     <button class="btn minus-btnhotel disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfRooms" id="NumOfRooms"  value="<%=hnoroom%>">
+                    <input style="text-align: center" type="text" name="NumOfRooms" id="NumOfRooms"  value="${result.HOUSENOROOM}">
                     <button class="btn plus-btnhotel" type="button">+</button>
                 </div>
             </div>
@@ -217,7 +195,7 @@
                 <div class="quantity">
                     <img src="https://img.icons8.com/ios-glyphs/40/000000/shower-and-tub.png"/>
                     <button class="btn minus-btnbath disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfToilet" id="NumOfToilet" value="<%=hnotoilet%>">
+                    <input style="text-align: center" type="text" name="NumOfToilet" id="NumOfToilet" value="${result.HOUSENOTOILET}">
                     <button class="btn plus-btnbath" type="button">+</button>
                 </div>
             </div>
@@ -228,7 +206,7 @@
                 <div class="quantity">
                     <img src="https://img.icons8.com/ios-filled/40/000000/furniture.png"/>
                     <button class="btn minus-btnsfa disabled" type="button">-</button>
-                    <input style="text-align: center" type="text" name="NumOfSofa" id="NumOfSofa" value="<%=furnish%>"/>
+                    <input style="text-align: center" type="text" name="NumOfSofa" id="NumOfSofa" value="${result.HOUSEFURNITURE}"/>
                     <button class="btn plus-btnsfa" type="button">+</button>
                 </div>
             </div>
@@ -237,7 +215,7 @@
                 <div class="quantity">
                     <td style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/40/000000/washing-machine.png"/>
                         <button class="btn minus-btnwm disabled" type="button">-</button>
-                        <input style="text-align: center" type="text" name="NumOfWM" id="NumOfWM"  value="<%=washing%>"/>
+                        <input style="text-align: center" type="text" name="NumOfWM" id="NumOfWM"  value="${result.HOUSEWM}"/>
                         <button class="btn plus-btnwm" type="button">+</button>
                 </div>
             </div>
@@ -248,7 +226,7 @@
                 <div class="quantity">
                     <img src="https://img.icons8.com/fluency-systems-filled/40/000000/air-conditioner.png"/>
                     <button class="btn minus-btnac disabled" type="button">-</button>
-                    <input  style="text-align: center" type="text" name="NumOfAC" id="NumOfAC" value="<%=hnoac%>"/>
+                    <input  style="text-align: center" type="text" name="NumOfAC" id="NumOfAC" value="${result.HOUSENOAC}"/>
                     <button class="btn plus-btnac" type="button">+</button>
                 </div>
             </div>
@@ -258,7 +236,7 @@
         <div class="form-group col-md">
             <label for="Desc">House description:</label>
             <br>
-            <textarea id="Desc" maxlength="255" name="Desc" rows="4" cols="50"><%=housedesc%></textarea>
+            <textarea id="Desc" maxlength="255" name="Desc" rows="4" cols="50">${result.HOUSEDESCRIPTION}</textarea>
         </div>
 
 
@@ -269,6 +247,8 @@
             <input type="file" accept="image/*" id="hPic" name="hPic" class="file-upload"
                    data-height="300" required="required"/>
         </div>
+        <button>${result.HOUSEPICNAME}</button><button><i class="material-icons w3-xlarge">close</i></button>
+
 
 
         <br>
@@ -280,13 +260,9 @@
         <br/>
     </form>
 </div>
-
+</c:forEach>
 
 <script>
-
-    //upload file
-
-    //$('.file-upload').file_upload();
 
     //price under 1 button disabled
 
