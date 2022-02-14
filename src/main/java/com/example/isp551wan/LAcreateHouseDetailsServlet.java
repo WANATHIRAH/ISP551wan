@@ -41,7 +41,7 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
            int hNoRoom = Integer.parseInt(request.getParameter("NumOfRooms"));
            int hNoToilet = Integer.parseInt(request.getParameter("NumOfToilet"));
            int hNoAC = Integer.parseInt(request.getParameter("NumOfAC"));
-           boolean hWifi = Boolean.parseBoolean(request.getParameter("hWifi"));
+           String hWifi = request.getParameter("hWifi");
            int hFurniture = Integer.parseInt(request.getParameter("NumOfSofa"));
            int hWM = Integer.parseInt(request.getParameter("NumOfWM"));
            String desc = request.getParameter("Desc");
@@ -64,7 +64,12 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
                String pass = "system";
                Connection conn = DriverManager.getConnection(dbURL, user, pass);
 
-               PreparedStatement st = conn.prepareStatement("insert into HOUSEDETAILSS(HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID) values(localtimestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?,HOUSE_SEQ.NEXTVAL,1)");
+               PreparedStatement st = conn.prepareStatement("insert into HOUSEDETAILSS(HOUSEPUBLISHDATE,HOUSENAME," +
+                       "HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY," +
+                       "HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC," +
+                       "HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION" +
+                       ",HOUSEPICNAME,HOUSEID,LANDLORDID) " +
+                       "values(localtimestamp,?,?,?,?,?,?,?,?,?,?,?,?,?,?,HOUSE_SEQ.NEXTVAL,1)");
                st.setString(1,hName);
                st.setDouble(2,hMP);
                st.setString(3,hAddress);
@@ -74,7 +79,7 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
                st.setInt(7,hNoRoom);
                st.setInt(8,hNoToilet);
                st.setInt(9,hNoAC);
-               st.setBoolean(10,hWifi);
+               st.setString(10,hWifi);
                st.setInt(11,hFurniture);
                st.setInt(12,hWM);
                st.setString(13,desc);

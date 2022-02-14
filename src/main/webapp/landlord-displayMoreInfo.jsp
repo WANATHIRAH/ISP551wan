@@ -11,6 +11,9 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <a href="https://icons8.com/icon/549/washing-machine"></a>
 <a href="https://icons8.com/icon/NhCGK7IM0kV0/bedroom"></a>
@@ -24,40 +27,29 @@
 <body>
 
 <%@include file="landlord-navbar.html"%>
-<%
-    String houseidJ= (String)request.getAttribute("hids");
-    String housenameJ= (String)request.getAttribute("hnames");
-    String housemonth= (String)request.getAttribute("hpaymonth");
-    String houseadd= (String)request.getAttribute("haddress");
-    String houseloc= (String)request.getAttribute("houseloc");
-    Date d= (Date) request.getAttribute("hpdate");
-    String available= (String)request.getAttribute("hava");
-    String hnotenant= (String)request.getAttribute("hnoT");
-    String hnoroom= (String)request.getAttribute("hnoR");
-    String hnotoilet= (String)request.getAttribute("hnoToil");
-    String hnoac= (String)request.getAttribute("hnoAC");
-    String wifi= (String)request.getAttribute("hnoWifi");
-    String furnish= (String)request.getAttribute("hnoFur");
-    String washing= (String)request.getAttribute("hnoWM");
-    String housedesc= (String)request.getAttribute("hdec");
-    String housepic= (String)request.getAttribute("hpic");
-    String landid= (String)request.getAttribute("landid");
 
+<sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
 
-%>
+<sql:query dataSource="${ic}" var="oc">
+    <%
+        int jhouseid = Integer.parseInt(request.getParameter("hid"));
+    %>
+    <c:set var="jhouseid" value="<%=jhouseid%>"/>
+    SELECT HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTENANTS,HOUSENOROOM,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID
+    FROM HOUSEDETAILSS
+    WHERE HOUSEID=?
+    <sql:param value="${jhouseid}" />
+</sql:query>
+
+<c:forEach var="result" items="${oc.rows}">
 <div class="showgrid">
-    <%
-        if(housenameJ!="" && houseidJ!=""){
-    %>
-<div class="topic"><%=housenameJ%></div>
-    <%
-        }
-    %>
+<div class="topic">${result.housename}</div>
+
 
     <form action="" method="post" id="theForm">
         <div>
-            <input type="number" id="hid" name="hid" value="<%=houseidJ%>" hidden/>
-            <input type="number" id="landid" name="landid" value="<%=landid%>" hidden/>
+            <input type="number" id="hid" name="hid" value="${result.houseid}" hidden/>
+            <input type="number" id="landid" name="landid" value="${result.landlordid}" hidden/>
         </div>
      <div class="mybtn">
         <button formaction="#" type="submit">Booking</button>
@@ -74,7 +66,7 @@
                  <%-- display image by house-id and image array --%>
                      <div class="w3-content w3-display-container">
                          <%-- kene ada foreach klau nk display bnyk image nnti --%>
-                         <img class="mySlides" src="images/<%=housepic%>" style="width:100%">
+                         <img class="mySlides" src="images/${result.housepicname}" style="width:100%">
 
                          <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
                          <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
@@ -88,38 +80,38 @@
                 <table>
                     <tr>
                         <td colspan="2">Publish Date </td>
-                        <td colspan="3"><%=d%></td>
+                        <td colspan="3">${result.housepublishdate}</td>
                     </tr>
                     <tr>
                         <td colspan="2">Address</td>
-                        <td colspan="3"><%=houseadd%></td>
+                        <td colspan="3">${result.houseaddress}</td>
                     </tr>
                     <tr>
                         <td colspan="2">Location</td>
-                        <td colspan="3"><%=houseloc%></td>
+                        <td colspan="3">${result.houselocation}</td>
                     </tr>
                     <tr>
                         <td colspan="2">Price (per month) RM</td>
-                        <td colspan="3"><%=housemonth%></td>
+                        <td colspan="3">${result.HOUSEMONTHLYPRICE}</td>
                     </tr>
                     <tr>
                         <td colspan="2">Number of Tenant</td>
-                        <td colspan="3"><%=hnotenant%></td>
+                        <td colspan="3">${result.HOUSENOTENANTS}</td>
                     </tr>
                     <tr>
                         <td colspan="2">House Availability</td>
-                        <td colspan="3"><%=available%></td>
+                        <td colspan="3">${result.HOUSEAVAILIBILITY}</td>
                     </tr>
                     <tr>
                         <td colspan="2">Wifi Availability</td>
-                        <%if (wifi.equals("true")){%>
+                        <c:set var = "wifiAv" scope = "session" value = "${result.HOUSEWIFI}"/>
+                        <c:if test = "${wifiAv == 'Available'}">
                         <td colspan="3">Available</td>
-                        <% }
+                        </c:if>
+                        <c:if test = "${wifiAv == 'Not Available'}">
                         else if (wifi.equals("false")){%>
                         <td colspan="3">Not Available</td>
-                        <%
-                            }
-                        %>
+                        </c:if>
                     </tr>
                     <tr>
                         <td style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/40/000000/sleeping-in-bed.png"/></td>
@@ -136,15 +128,15 @@
                         <td text-align="center">Furniture</td>
                     </tr>
                     <tr>
-                        <td><%=hnoroom%></td>
-                        <td><%=hnotoilet%></td>
-                        <td><%=hnoac%></td>
-                        <td><%=washing%></td>
-                        <td><%=furnish%></td>
+                        <td>${result.HOUSENOROOM}</td>
+                        <td>${result.HOUSENOTOILET}</td>
+                        <td>${result.HOUSENOAC}</td>
+                        <td>${result.HOUSEWM}</td>
+                        <td>${result.HOUSEFURNITURE}</td>
                     </tr>
                     <tr>
                         <td colspan="2">House Description</td>
-                        <td colspan="3"><%=housedesc%></td>
+                        <td colspan="3">${result.HOUSEDESCRIPTION}</td>
                     </tr>
                 </table>
                 </div>
@@ -154,6 +146,7 @@
 </div>
 <br>
 </div>
+</c:forEach>
 
 <script>
 

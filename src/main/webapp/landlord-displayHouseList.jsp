@@ -36,7 +36,7 @@
     <c:forEach var="result" items="${oc.rows}">
         <c:set var="houseid" scope="application" value="${result.houseid}"/>
     <div class="Hcont">
-        <form action="LAdisplayMoreDetailsServlet" method="post">
+        <form action="landlord-displayMoreInfo.jsp" method="post">
             <input type="number" id="hid" name="hid" value="${result.houseid}" hidden/>
         <div class="housepic">
             <img src="images/${result.housepicname}"/>
