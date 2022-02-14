@@ -1,4 +1,7 @@
-<%--
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %><%--
   Created by IntelliJ IDEA.
   User: User
   Date: 31/12/2021
@@ -21,10 +24,12 @@
 </div>
 <br>
 
-<sql:setDataSource var="ic" driver="org.postgresql.Driver" url="jdbc:postgresql://ec2-44-194-101-60.compute-1.amazonaws.com:5432/d2us57cbf117bh" user="rnscsqosqdtcmz" password="0b201fb2e59025b780ce0b4148e508b6747fbaf77f6e8cedc675ee4dbc44638a"/>
+<sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
 
 <sql:query dataSource="${ic}" var="oc">
-    SELECT houseid,housepicname,housename from housedetails;
+    SELECT HOUSEID,HOUSEPICNAME,HOUSENAME
+    FROM HOUSEDETAILSS
+    WHERE LANDLORDID=1
 </sql:query>
 
 <div class="overflow-auto">
