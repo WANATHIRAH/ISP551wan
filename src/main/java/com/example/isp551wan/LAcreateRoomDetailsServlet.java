@@ -10,6 +10,7 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 @MultipartConfig
 @WebServlet(name = "LAcreateRoomDetailsServlet", value = "/LAcreateRoomDetailsServlet")
@@ -23,6 +24,9 @@ public class LAcreateRoomDetailsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+
+
+        int idroom =0;
 
         Part f=request.getPart("hPic");
         String imageFileName=f.getSubmittedFileName();
@@ -82,10 +86,16 @@ public class LAcreateRoomDetailsServlet extends HttpServlet {
                 st.setString(11,desc);
                 st.setString(12,imageFileName);
 
-                PreparedStatement sp=conn.prepareStatement("insert into room(HOUSEID) values(HOUSE_SEQ.NEXTVAL)");
 
+                PreparedStatement sr=conn.prepareStatement("select max(houseid) from housedetails");
+                ResultSet rs = sr.executeQuery();
+                while(rs.next()){
+                    idroom = rs.getInt(1);
+                }
+
+                PreparedStatement sp=conn.prepareStatement("insert into room(HOUSEID) values(?)");
+                sp.setInt(1,idroom);
                 int row2= sp.executeUpdate();
-
 
                 int row= st.executeUpdate();
 

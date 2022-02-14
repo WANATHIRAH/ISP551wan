@@ -9,6 +9,7 @@ import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 @MultipartConfig
 @WebServlet(name = "LAcreateHouseDetailsServlet", value = "/LAcreateHouseDetailsServlet")
@@ -28,7 +29,7 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
         File file = new File("C:/Users/Public/LAB EXERCISE/nonresident/src/main/webapp/images/" + imageFileName);
         System.out.println("my file need upload" + file);
 
-
+         int idhouse=0;
        try{
 
 
@@ -83,9 +84,17 @@ public class LAcreateHouseDetailsServlet extends HttpServlet {
                st.setString(11,desc);
                st.setString(12,imageFileName);
 
-               PreparedStatement sp=conn.prepareStatement("insert into house(HOUSEID,HOUSENOTENANTS,HOUSENOROOM) values(HOUSE_SEQ.NEXTVAL,?,?)");
-               sp.setInt(1,hNoTenants);
-               sp.setInt(2,hNoRoom);
+               PreparedStatement sr=conn.prepareStatement("select max(houseid) from housedetails");
+               ResultSet rs = sr.executeQuery();
+               while(rs.next()){
+                   idhouse = rs.getInt(1);
+                   System.out.println(idhouse);
+               }
+
+               PreparedStatement sp=conn.prepareStatement("insert into house(HOUSEID,HOUSENOTENANTS,HOUSENOROOM) values(?,?,?)");
+               sp.setInt(1,idhouse);
+               sp.setInt(2,hNoTenants);
+               sp.setInt(3,hNoRoom);
 
                int row= st.executeUpdate();
 
