@@ -55,7 +55,7 @@
             <input type="hidden" name="action" value="updHouse"/>
         </div>
      <div class="mybtn">
-        <button formaction="#" type="submit">Booking</button>
+        <button formaction="landlord-displayBookingList.jsp" type="submit">Booking</button>
         <button formaction="landlord-updateHouseDetails.jsp" type="submit">Edit</button>
         <button type="submit" formaction="LAdeleteHouseDetails" onclick="return confirm('Are you sure you wish to delete? Your action cannot be undone!');">Delete</button>
      </div>
