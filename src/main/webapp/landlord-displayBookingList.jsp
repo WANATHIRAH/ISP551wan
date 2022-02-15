@@ -18,15 +18,23 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <body>
 <%@include file="landlord-navbar.html"%>
-<sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/><sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
+<sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
+    <%
+        int jhouseid = Integer.parseInt(request.getParameter("hid"));
+    %>
 <sql:query dataSource="${ic}" var="oc">
-    SELECT BOOKINGID,BOOKINGSTATUS,BOOKINGTIME,BOOKINGDATE,BOOKINGAPPROVALDATE,TENANTID
-    FROM   BOOKINGDETAILS
+    <c:set var="jhouseid" value="<%=jhouseid%>"/>
+    SELECT B.BOOKINGID,B.BOOKINGSTATUS,B.BOOKINGTIME,B.BOOKINGDATE,B.BOOKINGAPPROVALDATE,B.TENANTID,H.HOUSENAME
+    FROM   BOOKINGDETAILS B
+    JOIN HOUSEDETAILS H
+        on B.HOUSEID = H.HOUSEID
+    WHERE B.HOUSEID = ?
+    <sql:param value="${jhouseid}" />
 </sql:query>
 <div class="titlebg">
    <fieldset>
 <c:forEach var="result" items="${oc.rows}">
-    <legend>${result.bookingid}</legend>
+    <legend>${result.HOUSENAME}</legend>
 </c:forEach>
     <div class="htopic">
         <h1>TENANCY BOOKING APPLICATION</h1>

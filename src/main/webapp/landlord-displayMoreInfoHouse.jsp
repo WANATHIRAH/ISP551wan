@@ -33,19 +33,20 @@
 <sql:query dataSource="${ic}" var="oc">
     <%
         int jhouseid = Integer.parseInt(request.getParameter("hid"));
+        System.out.println(jhouseid);
     %>
     <c:set var="jhouseid" value="<%=jhouseid%>"/>
     SELECT H.HOUSEPUBLISHDATE,H.HOUSENAME,H.HOUSEMONTHLYPRICE,H.HOUSEADDRESS,H.HOUSELOCATION,H.HOUSEAVAILIBILITY,H.HOUSENOTOILET,H.HOUSENOAC,H.HOUSEWIFI,H.HOUSEFURNITURE,H.HOUSEWM,H.HOUSEDESCRIPTION,H.HOUSEPICNAME,H.HOUSEID,H.LANDLORDID,HH.HOUSENOTENANTS,HH.HOUSENOROOM
-    FROM HOUSE HH
-    JOIN HOUSEDETAILS H
+    FROM HOUSEDETAILS H
+    FULL OUTER JOIN HOUSE HH
     ON HH.HOUSEID = H.HOUSEID
-    WHERE HH.HOUSEID=?
+    WHERE H.HOUSEID=?
     <sql:param value="${jhouseid}" />
 </sql:query>
 
 <c:forEach var="result" items="${oc.rows}">
 <div class="showgrid">
-<div class="topic">${result.housename}</div>
+    <div class="topic">${result.housename}</div>
 
 
     <form action="" method="post" id="theForm">
