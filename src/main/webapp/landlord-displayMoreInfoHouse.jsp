@@ -36,10 +36,10 @@
     %>
     <c:set var="jhouseid" value="<%=jhouseid%>"/>
     SELECT H.HOUSEPUBLISHDATE,H.HOUSENAME,H.HOUSEMONTHLYPRICE,H.HOUSEADDRESS,H.HOUSELOCATION,H.HOUSEAVAILIBILITY,H.HOUSENOTOILET,H.HOUSENOAC,H.HOUSEWIFI,H.HOUSEFURNITURE,H.HOUSEWM,H.HOUSEDESCRIPTION,H.HOUSEPICNAME,H.HOUSEID,H.LANDLORDID,HH.HOUSENOTENANTS,HH.HOUSENOROOM
-    FROM HOUSEDETAILSS H
-    JOIN HOUSE HH
-    ON H.HOUSEID = HH.HOUSEID
-    WHERE HOUSEID=?
+    FROM HOUSE HH
+    JOIN HOUSEDETAILS H
+    ON HH.HOUSEID = H.HOUSEID
+    WHERE HH.HOUSEID=?
     <sql:param value="${jhouseid}" />
 </sql:query>
 
@@ -52,6 +52,7 @@
         <div>
             <input type="number" id="hid" name="hid" value="${result.houseid}" hidden/>
             <input type="number" id="landid" name="landid" value="${result.landlordid}" hidden/>
+            <input type="hidden" name="action" value="updHouse"/>
         </div>
      <div class="mybtn">
         <button formaction="#" type="submit">Booking</button>

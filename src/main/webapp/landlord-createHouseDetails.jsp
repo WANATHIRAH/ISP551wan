@@ -92,7 +92,7 @@
                             <input class="c1" type="radio" name="hWifi" id="WYes" value="Available">Available
                          </span>
                         <span class="c2">
-                            <input class="c1" type="radio" name="hWifi" id="WNo" value="Available">Not Available
+                            <input class="c1" type="radio" name="hWifi" id="WNo" value="Not Available">Not Available
                         </span>
                     </div>
                 </div>

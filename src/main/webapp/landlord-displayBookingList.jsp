@@ -8,6 +8,8 @@
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 
 <style><%@include file="landlord-displayBookingList.css"%></style>
@@ -16,9 +18,16 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <body>
 <%@include file="landlord-navbar.html"%>
+<sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/><sql:setDataSource var="ic" driver="oracle.jdbc.driver.OracleDriver" url="jdbc:oracle:thin:@localhost:1521:XE" user="NRS" password="system"/>
+<sql:query dataSource="${ic}" var="oc">
+    SELECT BOOKINGID,BOOKINGSTATUS,BOOKINGTIME,BOOKINGDATE,BOOKINGAPPROVALDATE,TENANTID
+    FROM   BOOKINGDETAILS
+</sql:query>
 <div class="titlebg">
    <fieldset>
-    <legend>RUMAH BANGLO TAMAN PERMAI INDAH</legend>
+<c:forEach var="result" items="${oc.rows}">
+    <legend>${result.bookingid}</legend>
+</c:forEach>
     <div class="htopic">
         <h1>TENANCY BOOKING APPLICATION</h1>
     </div>
@@ -143,40 +152,40 @@
 
 </div>
 
-    <div id="popDH" class="overlay">
-        <div class="popup">
-            <h2>Tenancy Details</h2>
-            <br>
-            <div class="content">
-                <label for="tID">Tenant ID</label>
-                <input type="text" id="tID" name="tID">
-                <br>
-                <label for="tName">Name</label>
-                <input type="text" id="tName" name="tName">
-                <br>
-                <label for="tAge">Age</label>
-                <input type="text" id="tAge" name="tAge">
-                <br>
-                <label for="temail">Email</label>
-                <input type="text" id="temail" name="temail">
-                <br>
-                <label for="tPhone">Phone Number</label>
-                <input type="text" id="tPhone" name="tPhone">
-                <br>
-                <label for="tgender">Gender</label>
-                <input type="text" id="tgender" name="tgender">
-                <br>
-                <label>Booking Deposit</label>
-                <p>-</p>
-                <br>
-                <label>Booking Agreement</label>
-                <p>-</p>
-                <br>
-            </div>
+<%--    <div id="popDH" class="overlay">--%>
+<%--        <div class="popup">--%>
+<%--            <h2>Tenancy Details</h2>--%>
+<%--            <br>--%>
+<%--            <div class="content">--%>
+<%--                <label for="tID">Tenant ID</label>--%>
+<%--                <input type="text" id="tID" name="tID">--%>
+<%--                <br>--%>
+<%--                <label for="tName">Name</label>--%>
+<%--                <input type="text" id="tName" name="tName">--%>
+<%--                <br>--%>
+<%--                <label for="tAge">Age</label>--%>
+<%--                <input type="text" id="tAge" name="tAge">--%>
+<%--                <br>--%>
+<%--                <label for="temail">Email</label>--%>
+<%--                <input type="text" id="temail" name="temail">--%>
+<%--                <br>--%>
+<%--                <label for="tPhone">Phone Number</label>--%>
+<%--                <input type="text" id="tPhone" name="tPhone">--%>
+<%--                <br>--%>
+<%--                <label for="tgender">Gender</label>--%>
+<%--                <input type="text" id="tgender" name="tgender">--%>
+<%--                <br>--%>
+<%--                <label>Booking Deposit</label>--%>
+<%--                <p>-</p>--%>
+<%--                <br>--%>
+<%--                <label>Booking Agreement</label>--%>
+<%--                <p>-</p>--%>
+<%--                <br>--%>
+<%--            </div>--%>
 
-            <button class="close">Close</button>
-        </div>
-</div>
+<%--            <button class="close">Close</button>--%>
+<%--        </div>--%>
+<%--</div>--%>
 
 
     <div id="popAppr" class="overlay">

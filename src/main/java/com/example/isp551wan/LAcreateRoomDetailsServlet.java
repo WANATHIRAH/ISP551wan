@@ -67,7 +67,7 @@ public class LAcreateRoomDetailsServlet extends HttpServlet {
                 String pass = "system";
                 Connection conn = DriverManager.getConnection(dbURL, user, pass);
 
-                PreparedStatement st = conn.prepareStatement("insert into HOUSEDETAILSS(HOUSEPUBLISHDATE,HOUSENAME," +
+                PreparedStatement st = conn.prepareStatement("insert into HOUSEDETAILS(HOUSEPUBLISHDATE,HOUSENAME," +
                         "HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY," +
                         "HOUSENOTOILET,HOUSENOAC," +
                         "HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION" +
@@ -95,7 +95,7 @@ public class LAcreateRoomDetailsServlet extends HttpServlet {
 
                 PreparedStatement sp=conn.prepareStatement("insert into room(HOUSEID) values(?)");
                 sp.setInt(1,idroom);
-                int row2= sp.executeUpdate();
+                sp.executeUpdate();
 
                 int row= st.executeUpdate();
 

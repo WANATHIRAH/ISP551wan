@@ -92,7 +92,7 @@
                             <input class="c1" type="radio" name="hWifi" id="WYes" value="Available">Available
                          </span>
                         <span class="c2">
-                            <input class="c1" type="radio" name="hWifi" id="WNo" value="Available">Not Available
+                            <input class="c1" type="radio" name="hWifi" id="WNo" value="Not Available">Not Available
                         </span>
                     </div>
                 </div>
@@ -110,9 +110,8 @@
                     <button class="btn plus-btnbath" type="button">+</button>
                 </div>
             </div>
-        </div>
 
-        <div class="toinline">
+
             <div class="thedetails">
                 <div class="quantity">
                     <img src="https://img.icons8.com/ios-filled/40/000000/furniture.png"/>
@@ -121,7 +120,9 @@
                     <button class="btn plus-btnsfa" type="button">+</button>
                 </div>
             </div>
+        </div>
 
+        <div class="toinline">
             <div class="thedetails">
                 <div class="quantity">
                     <td style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/40/000000/washing-machine.png"/>
@@ -130,9 +131,7 @@
                         <button class="btn plus-btnwm" type="button">+</button>
                 </div>
             </div>
-        </div>
 
-        <div class="toinline">
             <div class="thedetails">
                 <div class="quantity">
                     <img src="https://img.icons8.com/fluency-systems-filled/40/000000/air-conditioner.png"/>

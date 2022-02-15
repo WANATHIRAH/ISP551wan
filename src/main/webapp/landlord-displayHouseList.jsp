@@ -29,7 +29,7 @@
 
 <sql:query dataSource="${ic}" var="oc">
     SELECT HOUSEID,HOUSEPICNAME,HOUSENAME,RENTYPE
-    FROM HOUSEDETAILSS
+    FROM HOUSEDETAILS
     WHERE LANDLORDID=1
 </sql:query>
 

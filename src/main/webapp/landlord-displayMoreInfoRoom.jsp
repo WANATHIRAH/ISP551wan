@@ -35,10 +35,8 @@
         int jhouseid = Integer.parseInt(request.getParameter("hid"));
     %>
     <c:set var="jhouseid" value="<%=jhouseid%>"/>
-    SELECT H.HOUSEPUBLISHDATE,H.HOUSENAME,H.HOUSEMONTHLYPRICE,H.HOUSEADDRESS,H.HOUSELOCATION,H.HOUSEAVAILIBILITY,H.HOUSENOTOILET,H.HOUSENOAC,H.HOUSEWIFI,H.HOUSEFURNITURE,H.HOUSEWM,H.HOUSEDESCRIPTION,H.HOUSEPICNAME,H.HOUSEID,H.LANDLORDID
-    FROM HOUSEDETAILSS H
-    JOIN ROOM R
-    ON H.HOUSEID = R.HOUSEID
+    SELECT HOUSEPUBLISHDATE,HOUSENAME,HOUSEMONTHLYPRICE,HOUSEADDRESS,HOUSELOCATION,HOUSEAVAILIBILITY,HOUSENOTOILET,HOUSENOAC,HOUSEWIFI,HOUSEFURNITURE,HOUSEWM,HOUSEDESCRIPTION,HOUSEPICNAME,HOUSEID,LANDLORDID
+    FROM HOUSEDETAILS
     WHERE HOUSEID=?
     <sql:param value="${jhouseid}" />
 </sql:query>
@@ -52,10 +50,11 @@
             <div>
                 <input type="number" id="hid" name="hid" value="${result.houseid}" hidden/>
                 <input type="number" id="landid" name="landid" value="${result.landlordid}" hidden/>
+                <input type="hidden" name="action" value="updRoom"/>
             </div>
             <div class="mybtn">
                 <button formaction="#" type="submit">Booking</button>
-                <button formaction="landlord-updateHouseDetails.jsp" type="submit">Edit</button>
+                <button formaction="landlord-updateRoomDetails.jsp" type="submit">Edit</button>
                 <button type="submit" formaction="LAdeleteHouseDetails" onclick="return confirm('Are you sure you wish to delete? Your action cannot be undone!');">Delete</button>
             </div>
         </form>
@@ -111,7 +110,6 @@
                                     </c:if>
                                 </tr>
                                 <tr>
-                                    <td style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/40/000000/sleeping-in-bed.png"/></td>
                                     <td style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/40/000000/shower-and-tub.png"/></td>
                                     <td style="text-align: center"><img src="https://img.icons8.com/fluency-systems-filled/40/000000/air-conditioner.png"/></td>
                                     <td style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/40/000000/washing-machine.png"/></td>
